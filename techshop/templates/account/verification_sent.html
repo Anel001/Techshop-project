@@ -1,0 +1,13 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{% trans "Verify Your E-mail Address" %}</h1>
+
+    <p>{% blocktrans %}На вашу почту отправлена ссылка для подтверждения аккаунта. Чтобы завершить этап регистрации, перейдите по ссылке. Если сообщение не пришло, проверьте папку спама. {% endblocktrans %}</p>
+</div>
+{% endblock %}

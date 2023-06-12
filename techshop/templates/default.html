@@ -1,0 +1,226 @@
+{% extends 'layout.html' %}
+
+{% load custom_tags %}
+{% load custom_filters %}
+
+{% block title %}
+    Catalog
+{% endblock title %}
+
+{% block content %}
+<div class="d-flex flex-row mb-4 mt-3">
+
+    <div class="sidebar p-2">
+        <div>
+            {% if messages %}
+                <div>
+                    {% for message in messages %}
+                        <div class="alert alert-primary" role="alert" style="margin: 5%; margin-top: 0;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                            </svg>
+                            {{message}}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="sticky">
+            <ul class="list-group">
+                <li class="list-group-item active" style="background-color: #185499; font-size: 1.1em;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    </svg>
+                    Категории
+                </li>
+                {% for cat in categories %}
+                    <li class="list-group-item e" style="background-color: #F4F8FD;">
+                        <a href="{% url 'category' cat.id %}" class="bar-text">{{cat.name}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+
+    <div class="p-2" align="right">
+
+        <div id="carouselControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselControls" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselControls" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselControls" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block round" src="{{ product1.image.url }}" alt="Первый слайд">
+                    <div class="carousel-caption d-none d-md-block">
+                        <a href="{% url 'product' product1.id %}"><h3 class="carouselhref">{{product1.name|truncatechars:40}}</h3></a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block round" src="{{ product2.image.url }}" alt="Второй слайд">
+                    <div class="carousel-caption d-none d-md-block">
+                        <a href="{% url 'product' product2.id %}"><h3 class="carouselhref">{{product2.name|truncatechars:40}}</h3></a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block round" src="{{ product3.image.url }}" alt="Третий слайд">
+                    <div class="carousel-caption d-none d-md-block">
+                        <a href="{% url 'product' product3.id %}"><h3 class="carouselhref">{{product3.name|truncatechars:40}}</h3></a>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselControls"  data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Предыдущий</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselControls"  data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Следующий</span>
+            </button>
+        </div>
+
+        <div class="header mb-4 mt-5">
+            <h1 style="color: #00008b;">Топ товаров</h1>
+            <hr>
+        </div>
+
+        <div class="row row-cols-3 row-cols-md-3" style="max-width: 100%; margin: 0 auto;" align="center">
+            {% for top in topProducts %}
+                <div class="col" style="padding: 0;">
+                    <div class="card text-bg-light mb-3 product-card" style="width: 16rem; height: 24rem;">
+                        <div class="card-body">
+                            <div class="image-container" style="display: flex; width: 100%; margin-bottom: 10px; overflow: hidden; justify-content: center;">
+                                <img src="{{ top.image.url }}" class="img-fluid card-img-top" style="max-width: 200px;  max-height: 200px;" alt="картинка товара">
+                            </div>
+                            {% if top.discount %}
+                                <h6 class="card-subtitle text-danger mb-2" style="font-size:1.3em; font-weight:700;">{{top.price}} &#8381 <del>{{top.state_price}} &#8381</del></h6>
+                            {% else %}
+                                <h6 class="card-subtitle text-danger mb-2" style="font-size:1.3em; font-weight:700;">{{top.price}} &#8381</h6>
+                            {% endif %}
+                            <div class="wrap-prod-card">
+
+                                <div class="rating-main card-subtitle" >
+                                    <li>1</li>
+                                    {{ top.rating }}
+                                </div>
+
+                                {% if top.inStock %}
+                                    <p class="card-subtitle" style="color:#26ac26; font-size:0.9em;">в наличии</p>
+                                {% else %}
+                                    <p class="card-subtitle" style="color:#ff7518; font-size:0.9em;">нет в наличии</p>
+                                {% endif %}
+                            </div>
+
+                            <h6 class="card-title mt-2 mb-2 card-title-main"><a href="{% url 'product' top.id %}" style="vertical-align:bottom;">{{top.name|truncatechars:35}}</a></h6>
+                            <h6 class="card-subtitle mt-2 mb-3 text-muted">{{top.category.name}}</h6>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="header mb-4 mt-5">
+            <h1 style="color: #00008b;">Популярные бренды</h1>
+            <hr>
+
+        </div>
+
+        <div class="brands">
+            {% for b in brands %}
+                <div class="brand-item">
+                    <img class="b-image" width="100%" src="{{ b.logo.url }}" alt="Производитель">
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <div class="header mb-4 mt-5">
+            <h1 style="color: #00008b;">Все товары</h1>
+            <hr>
+        </div>
+
+        <div class="filter-box m-4">
+            <div class="filter-title" onclick="clickedForm2()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+                </svg>
+                Фильтровать
+            </div>
+            <form id="filter-form-p" class="filter-form" action="" method="get">
+                {% csrf_token %}
+                <div class="wrapper-filter">
+                    <div class="filter-field">
+                        {% for field in filterset.form %}
+                            <div class="m-3 form-field">
+                                {{ field.label_tag }}
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <input class="btn btn-primary filter-btn" type="submit" value="Найти" />
+                </div>
+            </form>
+        </div>
+
+        {% if filter.qs %}
+            <p>
+                <form action="{% url 'base' %}" method="GET">
+                    {% csrf_token %}
+                    <div class="wrapper-sorting m-4">
+                        <div class="m-2">
+                            <input type="radio" id="cheap" name="sorting" value="price">
+                            <label for="cheap" title="сначала дешевые">сначала дешевые</label>
+                            <input type="radio" id="expensive" name="sorting" value="-price">
+                            <label for="expensive" title="сначала дорогие">сначала дорогие</label>
+                            <input type="radio" id="rating" name="sorting" value="rating">
+                            <label for="rating" title="по рейтингу">по рейтингу</label>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Сортировать">
+                    </div>
+
+                </form>
+            </p>
+
+            <div class="row row-cols-3 row-cols-md-3" style="max-width: 100%; margin: 0 auto;" align="center">
+                {% for product in filter.qs %}
+                    <div class="col" style="padding: 0;">
+                        <div class="card text-bg-light mb-3 product-card" style="width: 16rem; height: 24rem; ">
+                            <div class="card-body">
+                                <div class="image-container" style="display: flex; width: 100%; margin-bottom: 10px; overflow: hidden; justify-content: center;">
+                                    <img src="{{ product.image.url }}" class="img-fluid card-img-top" style="max-width: 200px;  max-height: 200px;" alt="картинка товара">
+                                </div>
+                                {% if product.discount %}
+                                    <h6 class="card-subtitle text-danger mb-2" style="font-size:1.3em; font-weight:700;">{{product.price}} &#8381 <del>   {{product.state_price}} &#8381</del></h6>
+                                {% else %}
+                                    <h6 class="card-subtitle text-danger mb-2" style="font-size:1.3em; font-weight:700;">{{product.price}} &#8381</h6>
+                                {% endif %}
+                                <div class="wrap-prod-card">
+
+                                    <div class="rating-main card-subtitle" >
+                                        <li>1</li>
+                                        {{ product.rating }}
+                                    </div>
+
+                                    {% if product.inStock %}
+                                        <p class="card-subtitle" style="color:#26ac26; font-size:0.9em;">в наличии</p>
+                                    {% else %}
+                                        <p class="card-subtitle" style="color:#ff7518; font-size:0.9em;">нет в наличии</p>
+                                    {% endif %}
+                                </div>
+
+                                <h6 class="card-title mt-2 mb-2 card-title-main"><a href="{% url 'product' product.id %}" style="vertical-align:bottom;">{{product.name|truncatechars:35}}</a></h6>
+                                <h6 class="card-subtitle mt-2 mb-3 text-muted">{{product.category.name}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

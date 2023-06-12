@@ -1,0 +1,399 @@
+:root {
+  --percent: 0%;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.01rem;
+}
+
+.card-title-main{
+    font-size: 1.2em;
+    font-weight: 600;
+    color: black;
+}
+
+.card-title-main a{
+    color: rgb(0, 0, 0);
+}
+
+.card-title-main a:hover{
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.card-title-detail{
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 1.9em;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.card-text-detail{
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: left;
+    padding: 2%;
+
+}
+
+.otzyv {
+    width: 30%;
+    margin: 0 auto;
+    -webkit-box-shadow: 0px 10px 17px -3px rgba(34, 60, 80, 0.32);
+    -moz-box-shadow: 0px 10px 17px -3px rgba(34, 60, 80, 0.32);
+    box-shadow: 0px 10px 17px -3px rgba(34, 60, 80, 0.32);
+}
+
+
+.rating-area {
+	overflow: hidden;
+	width: 210px;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}
+
+.rating-area:not(:checked) > input {
+	display: none;
+}
+.rating-area:not(:checked) > label {
+	float: right;
+	width: 42px;
+	padding: 0;
+	cursor: pointer;
+	font-size: 32px;
+	line-height: 32px;
+	color: lightgrey;
+	text-shadow: 1px 1px #bbb;
+}
+.rating-area:not(:checked) > label:before {
+	content: '★';
+}
+.rating-area > input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px #c60;
+}
+.rating-area:not(:checked) > label:hover,
+.rating-area:not(:checked) > label:hover ~ label {
+	color: gold;
+}
+.rating-area > input:checked + label:hover,
+.rating-area > input:checked + label:hover ~ label,
+.rating-area > input:checked ~ label:hover,
+.rating-area > input:checked ~ label:hover ~ label,
+.rating-area > label:hover ~ input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px goldenrod;
+}
+.rate-area > label:active {
+	position: relative;
+}
+
+.rating-result {
+	width: 265px;
+	margin: 0 auto;
+}
+.rating-result span {
+	padding: 0;
+	font-size: 32px;
+	margin: 0 3px;
+	line-height: 1;
+	color: lightgrey;
+	text-shadow: 1px 1px #bbb;
+}
+
+.rating-result > span:before {
+	content: '★';
+}
+.rating-result > span.active {
+	color: gold;
+	text-shadow: 1px 1px #c60;
+}
+
+
+
+.rating {
+	width: 180px;
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+}
+.rating span {
+	padding: 0;
+	font-size: 30px;
+	margin: 0 2px;
+	line-height: 1;
+
+}
+
+#rating-total:before {
+	content: '★★★★★';
+	background: linear-gradient(90deg, #fc0 var(--percent), lightgrey 0%);
+	letter-spacing: 3px;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+
+.rating-main {
+  list-style: none;
+  margin: 6px;
+  padding: 0;
+  width: 100px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.rating-main li {
+  display: block;
+  width: 20px;
+  height: 20px;
+  float: right; /* обтекание по правой стороне как раз необходимо для выстравания элементов  в обратном порядке */
+  text-indent: -9999px; /* скрываем текст */
+  cursor: pointer;
+  background: url("../images/stars.png");
+  background-position: 0 -20px;
+}
+
+
+#isOrder {
+    display: none;
+}
+
+#carouselControls {
+    border-radius: 20px;
+}
+
+.carousel-item {
+    background-color: #c38bbf;
+    border-radius: 20px;
+}
+
+.round{
+    border-radius: 50%;
+    width: 25%;
+    margin: 0 auto;
+    padding: 0;
+    margin-top: 3%;
+}
+
+.carousel-caption{
+    position: static;
+    margin-bottom: 5%;
+    margin-top: 2%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.header{
+    text-align: center;
+}
+
+.brands{
+    display: flex;
+    justify-content: space-between;
+}
+
+.brand-item{
+    width: 20%;
+    height: 100%;
+    border: 1px solid gray;
+}
+
+.sidebar {
+    width: 40%;
+    margin-right: 1em;
+}
+
+.sticky{
+    position: sticky;
+    top: 20px;
+}
+
+.container-main{
+    display: flex;
+}
+
+a{
+    text-decoration: none;
+}
+
+.carouselhref{
+    color: rgba(255, 255, 255, 0.8);
+    transition: 1s;
+}
+
+.carouselhref:hover {
+    color: rgba(255, 255, 255);
+    transform: scale(1.2);
+}
+
+.navbar{
+    background-color: #185499;
+    font-size: 1.13em;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.poisk{
+    width: 30%;
+}
+
+form.poisk{
+    height: 60px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+form.poisk input{
+    width: 100%;
+    margin-top: 10px;
+    border: 2px solid #717171;
+    border-radius: 20px;
+    height: 70%;
+}
+
+a.bar-text {
+    vertical-align: bottom;
+    color: #16468f;
+}
+
+a.bar-text:hover {
+    color: rgba(32,106,194, 0.8);
+    text-decoration: none;
+}
+
+div.filter-box{
+    margin: 0 auto;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    border: 1px solid #c1c8e4;
+}
+
+.filter-form{
+    display: none;
+    animation-name: filter-form-anim;
+    transition: 1s;
+    animation-duration: 1s;
+}
+
+@keyframes filter-form-anim {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+
+
+.filter-title{
+    text-align: left;
+    background-color: #CADEF6;
+    padding: 5px 30px;
+    color: #24305e;
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+.filter-title:hover {
+    color: #3E88DF;
+}
+
+.product-card{
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.filter-field{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+}
+
+.form-field{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.wrapper-filter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.filter-btn{
+    width: 30%;
+    margin-bottom: 2%;
+}
+
+.wrapper-sorting{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.category-page{
+    width: 100%;
+}
+
+.btn-primary{
+    background-color: #185499;
+    font-size: 1em;
+}
+
+.wrap-prod-card{
+    display:flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.wrapper {
+    min-height: 100%;
+}
+
+.main-info {
+    padding-bottom: 100px;
+}
+
+footer {
+    height: 100px;
+    margin-top: -100px;
+}
+
+.btn-light-cart:hover {
+    background-color: rgb(224, 224, 225);
+}
+
+del {
+	font-size: 17px;
+	position: relative;
+	color: #000;
+	text-decoration: none;
+}
+del:before {
+	content: "";
+	border-bottom: 2px solid red;
+	position: absolute;
+	width: 100%;
+	height: 75%;
+	transform: rotate(-12deg);
+}
+
+.price-detail:before {
+    content: "";
+	border-bottom: 2px solid red;
+	position: absolute;
+	width: 100%;
+	height: 115%;
+	transform: rotate(-12deg);
+}

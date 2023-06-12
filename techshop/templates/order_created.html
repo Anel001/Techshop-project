@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Заказ
+{% endblock title %}
+{% block content %}
+    <h1>Спасибо за заказ!</h1><br>
+    <p class="text-bg-secondary p-3">Ваш заказ сформирован и ожидает обработки. Номер заказа
+        <strong>{{ order.id }}</strong>.</p>
+    <a href="{% url 'order' order.id %}" class="btn btn-primary">Посмотреть заказ</a>
+{% endblock content %}

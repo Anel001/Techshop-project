@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% load custom_filters %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 style="color: #00008b;" >Техническая поддержка</h1>
+    <p style="width: 50%; margin: 0 auto;">
+        Если у вас возникли вопросы по работе нашего сайта, пожалуйста, заполните форму ниже.
+        Наш ассистент проконсультирует вас по электронной почте
+    </p>
+    <hr>
+    <p>
+        <form action="{% url 'support' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="first_name_support" title="Имя">Имя:</label><br>
+            <input class="mb-3" type="text" id="first_name_support" name="first_name" value="{{request.user.first_name}}"><br>
+            <label for="email_support" title="Имя">Почта:</label><br>
+            <input class="mb-3" type="text" id="email_support" name="email" value="{{request.user.email}}"><br>
+            <label for="text_support" title="Описание проблемы">Описание проблемы:</label><br>
+            <textarea class="mb-3" type="text" id="text_support" name="text"></textarea><br>
+
+            <input class="btn btn-primary" type="submit" value="Отправить">
+        </form>
+    </p>
+
+
+</div>
+{% endblock content %}

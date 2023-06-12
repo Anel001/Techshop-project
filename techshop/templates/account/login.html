@@ -1,0 +1,64 @@
+{% extends "account/base.html" %}
+
+{% load widget_tweaks %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+<div class="container" style="width:40%;">
+
+    <h1>{% trans "Sign In" %}</h1>
+
+    {% get_providers as socialaccount_providers %}
+
+    {% if socialaccount_providers %}
+    <p>{% blocktrans with site.name as site_name %}Войти с помощью существующего аккаунта google.
+        Или привяжите аккаунт по ссылке ниже, после чего войдите на сайт:{% endblocktrans %}</p>
+
+    <div class="socialaccount_ballot">
+
+      <ul class="socialaccount_providers">
+        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+      </ul>
+
+      <div class="login-or">{% trans 'or' %}</div>
+
+    </div>
+
+    {% include "socialaccount/snippets/login_extra.html" %}
+
+    {% else %}
+    <p>{% blocktrans %}Если вы еще не создали учетную запись, пожалуйста, сперва
+    <a href="{{ signup_url }}">зарегистрируйтесь</a>.{% endblocktrans %}</p>
+    {% endif %}
+
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+        <div class="form-group">
+            {% csrf_token %}
+            {{ form.non_field_errors | safe }}
+              <input type="hidden" name="remember" value="true" />
+                <div class="md-form mb-3">
+                  {{ form.email.errors | safe }}
+                  <label for="email" class="sr-only">Почта</label>
+                  {% render_field form.login class="form-control" placeholder="Email"%}
+                </div>
+                <div class="md-form mb-3">
+                  {{ form.password.errors | safe }}
+                  <label for="password" class="sr-only">Пароль</label>
+                  {% render_field form.password class="form-control" placeholder="Пароль"%}
+                </div>
+
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+            {% if not user.is_authenticated %}
+              <a class="btn btn-primary" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+            {% endif %}
+            <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

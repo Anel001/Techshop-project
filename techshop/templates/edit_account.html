@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Личный кабинет
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4" style="color: #00008b;">Изменить данные {{ request.user.username }}</h1>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="address" title="Адрес">Адрес:</label>
+        <input class="mb-4" type="text" id="address" name="address" value="{{request.user.profile.address}}"><br>
+        <input class="btn btn-primary mb-3" type="submit" value="Сохранить">
+    </form>
+
+</div>
+{% endblock %}

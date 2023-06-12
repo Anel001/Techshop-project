@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Заказ
+{% endblock title %}
+
+{% block content %}
+<h1 class="my-4" style="color: #00008b;">Оформление заказа</h1>
+    <div class="order-info" align="center">
+        <ul class = "list-group" style="width: 70%;" >
+            {% for item in cart %}
+                <li class="list-group-item">
+                    {{ item.product.name }} <strong class="d-flex justify-content-end"><em>х {{ item.quantity }}</em></strong>
+                    <span class="d-flex justify-content-end">{{ item.total_price }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <br>
+        <h4><strong>Итого к оплате: {{ cart.get_total_price }} рублей</strong></h4>
+    </div>
+    <hr>
+    <form action="." method="post" class="order-form">
+        <label for="first_name" title="Имя">Имя:</label>
+        <input class="mb-3" type="text" id="first_name" name="first_name" value="{{request.user.first_name}}"><br>
+        <label for="last_name" title="Фамилия">Фамилия:</label>
+        <input class="mb-3" type="text" id="last_name" name="last_name" value="{{request.user.last_name}}"><br>
+        <label for="address" title="Адрес">Адрес:</label>
+        <input class="mb-3" type="text" id="address" name="address" value="{{request.user.profile.address}}"><br>
+        <div class="payment-area mb-3">
+            <input type="radio" id="card" name="payment" value="Карта">
+            <label for="card">Карта</label>
+            <input type="radio" id="cash" name="payment" value="Наличные" checked>
+            <label for="cash">Наличные</label>
+        </div>
+        {{ form.as_p }}
+        <p><input class="btn btn-success" type="submit" value="Заказать"></p>
+        {% csrf_token %}
+    </form>
+{% endblock content %}

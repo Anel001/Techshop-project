@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Category
+{% endblock title %}
+{% block content %}
+<div class="d-flex flex-row mb-4 mt-3">
+
+    <div class="sidebar p-2" style="width:20%;">
+        <div class="sticky">
+            <ul class="list-group">
+                <li class="list-group-item active" style="background-color: #185499; font-size: 1.1em;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    </svg>
+                    Категории
+                </li>
+                {% for cat in categories %}
+                    <li class="list-group-item e" style="background-color: #F4F8FD;">
+                        <a href="{% url 'category' cat.id %}" class="bar-text">{{cat.name}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div></div>
+    </div>
+
+    <div class="p-2 category-page" align="right">
+        {% if request.user.is_authenticated %}
+            <div class="m-3">
+                {% if is_subscribed %}
+                    <button class="btn btn-primary"> <a class="text-light" href="{% url 'unsubscribe' category.id %}"> Отписаться от категории</a> </button>
+                {% else %}
+                    <button class="btn btn-primary"> <a class="text-light" href="{% url 'subscribe' category.id %}">Подписаться на категорию</a> </button>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="filter-box m-4">
+            <div class="filter-title" onclick="clickedForm()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+                </svg>
+                Фильтровать
+            </div>
+            <form id="filter-form-c" class="filter-form" action="" method="get">
+                {% csrf_token %}
+                <div class="wrapper-filter">
+                    <div class="filter-field">
+                        {% for field in filterset.form %}
+                            <div class="m-3 form-field">
+                                {{ field.label_tag }}
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <input class="btn btn-primary filter-btn" type="submit" value="Найти" />
+                </div>
+            </form>
+        </div>
+
+        {% if filterset.qs %}
+            <div class="row row-cols-3 row-cols-md-3" style="max-width: 100%; margin: 0 auto;" align="center">
+                {% for product in filterset.qs %}
+                    <div class="col" style="padding: 0;">
+                        <div class="card text-bg-light mb-3 product-card" style="width: 16rem; height: 24rem; ">
+                            <div class="card-body">
+                                <div class="image-container" style="display: flex; width: 100%; margin-bottom: 10px; overflow: hidden; justify-content: center;">
+                                    <img src="{{ product.image.url }}" class="img-fluid card-img-top" style="max-width: 200px;  max-height: 200px;" alt="картинка товара">
+                                </div>
+                                {% if product.discount %}
+                                    <h6 class="card-subtitle text-danger mb-2" style="font-size:1.3em; font-weight:700;">{{product.price}} &#8381 <del>{{product.state_price}} &#8381</del></h6>
+                                {% else %}
+                                    <h6 class="card-subtitle text-danger mb-2" style="font-size:1.3em; font-weight:700;">{{product.price}} &#8381</h6>
+                                {% endif %}
+                                <div class="wrap-prod-card">
+
+                                    <div class="rating-main card-subtitle" >
+                                        <li>1</li>
+                                        {{ product.rating }}
+                                    </div>
+
+                                    {% if product.inStock %}
+                                        <p class="card-subtitle" style="color:#26ac26; font-size:0.9em;">в наличии</p>
+                                    {% else %}
+                                        <p class="card-subtitle" style="color:#ff7518; font-size:0.9em;">нет в наличии</p>
+                                    {% endif %}
+                                </div>
+
+                                <h6 class="card-title mt-2 mb-2 card-title-main"><a href="{% url 'product' product.id %}" style="vertical-align:bottom;">{{product.name|truncatechars:35}}</a></h6>
+                                <h6 class="card-subtitle mt-2 mb-3 text-muted">{{product.category.name}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

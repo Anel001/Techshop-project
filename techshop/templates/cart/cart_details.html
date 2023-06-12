@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}
+    Корзина
+{% endblock %}
+{% block content %}
+    <h1 class="mt-4" style="color: #00008b;">Корзина товаров</h1><br>
+    <table class="table cart">
+        <thead>
+        <tr>
+            <th>Товар</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Сумма</th>
+            <th> </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                    <td><a href="{% url 'product' product.id %}" class="btn btn-light btn-light-cart">{{product.name}}</a></td>
+                    <td>{{ item.quantity }}</td>
+                    <td class="num">{{ item.price }}</td>
+                    <td class="num">{{ item.total_price }}</td>
+                    <td><a href="{% url 'cart_remove' product.id%}" class="btn btn-danger">Убрать</a></td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td><strong>Итого к оплате:</strong></td>
+            <td colspan="4"></td>
+            <td class="num"><strong>{{ cart.get_total_price }}</strong> рублей</td>
+        </tr>
+        </tbody>
+    </table>
+<div class="d-grid gap-2 col-5 mx-auto">
+    <p class="text-right">
+        <a href="/" class="btn btn-primary">Вернуться в каталог</a><br>
+        <br>
+        {% if cart2 %}
+        <a href="{% url 'order_create' %}" class="btn btn-success">Перейти к оформлению</a>
+        {% endif %}
+    </p>
+</div>
+{% endblock %}

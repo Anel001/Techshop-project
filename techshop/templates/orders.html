@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Заказы
+{% endblock title %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4" style="color: #00008b;">Все заказы:</h1>
+    <hr>
+    <div class="buttons m-3">
+        <button onclick="myFunction1()" class="btn btn-primary"> Текущие </button>
+        <button onclick="myFunction2()" class="btn btn-primary"> Архив </button>
+    </div>
+    <div id="notOrder">
+        {% if orders %}
+            {% for order in orders %}
+                {% if not order.status %}
+                    <div class="card mb-3" style="max-width: 100%;" align="center" onclick="location.href='{% url 'order' order.id %}';">
+                        <div class="card-header">Заказ от {{ order.order_data }} № <strong>{{ order.id }}</strong></div>
+                      <br><h6 class="card-subtitle mb-3 text-muted">Доставка: {{ order.delivery }}</h6>
+                      <div class="card-body">
+                      <h5 class="card-title text-danger">Не доставлен</h5>
+                      </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {%else%}
+            Текущих заказов нет
+        {% endif %}
+    </div>
+    <div id="isOrder">
+        {% if orders %}
+            {% for order in orders %}
+                {% if order.status %}
+                    <div class="card mb-3" style="max-width: 100%;" align="center" onclick="location.href='{% url 'order' order.id %}';">
+                         <div class="card-header">Заказ от {{ order.order_data }} № <strong>{{ order.id }}</strong></div>
+                      <br><h6 class="card-subtitle mb-3 text-muted">Доставка: {{ order.delivery }}</h6>
+                      <div class="card-body">
+                         <h5 class="card-title text-success">Доставлен</h5>
+                      </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {%else%}
+            Заказов нет!
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

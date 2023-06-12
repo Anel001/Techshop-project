@@ -1,0 +1,141 @@
+{% extends 'layout.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+    {{product.name}}
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    {% if product %}
+        <div class="card mb-3" style="max-width: 100%; flex-direction: row; justify-content:center;" align="center">
+            <div class="row g-0" style="width: 83%; border-right: 1px solid rgba(0,0,0,.125);">
+                <div class="col-md-4" style="width: 45%;">
+                    <img src="{{ product.image.url }}" width="100%" class="img-fluid rounded-start" alt="картинка товара">
+                </div>
+
+                <div class="col-md-8 text-end" style="width: 55%;">
+                    <div class="card-body pt-5 pb-4" style="height: 100%;">
+                        <h5 class="card-title card-title-detail">{{product.name}}</h5>
+                        <h6 class="card-subtitle mb-3 text-muted" style="font-size: 1.1em;">{{product.category.name}}</h6><hr>
+                        {% if product.discount %}
+                            <h6 class="card-subtitle text-danger mb-2" style="font-size:1.8em; font-weight:700;">{{product.price}} &#8381 <del class="price-detail">{{product.state_price}} &#8381</del></h6>
+                        {% else %}
+                            <h6 class="card-subtitle text-danger mb-2" style="font-size:1.8em; font-weight:700;">{{product.price}} &#8381</h6>
+                        {% endif %}
+                        <div class="rating">
+                            <div class="mx-2">{{ product.rating }}</div>
+                            <span id="rating-total" ></span>
+                            {{ product.rating|json_script:"rate-data" }}
+                        </div>
+
+                        <hr>
+                        <h6 class="card-subtitle mb-2" style="text-align: left; padding-left: 2%;">Описание:</h6>
+                        <div class="card-text card-text-detail">{{product.description|linebreaks}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width:17%;">
+                <div>
+                    <img class="b-image" width="100%" src="{{ product.producer.logo.url }}" alt="Производитель">
+                </div>
+                {% if amount %}
+                    <form action="{% url 'cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="my-4 mx-2 row" style="width:90%">
+                            <p class="col" style="width:50%; padding:0;">В наличии:</p>
+                            <div style="width:37%; padding:0;">
+                                <select class="col" name="quantity">
+                                    {% for q in amount|make_list %}
+                                        <option value="{{q}}">
+                                            {{q}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        {{ cart_product_form }}
+                        <input class="btn btn-primary" type="submit" value="Добавить в корзину">
+                    </form>
+                {% else %}
+                    <div class="pt-3"><strong>Нет в наличии</strong></div>
+                    {% if request.user.is_authenticated %}
+                        <div class="m-3">
+                            {% if is_subscribed %}
+                                <button class="btn btn-primary"> <a class="text-light" href="{% url 'unsub' product.id %}">Отписаться от рассылки</a> </button>
+                            {% else %}
+                                <button class="btn btn-primary"> <a class="text-light" href="{% url 'sub' product.id %}">Сообщить о поступлении</a> </button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <br>
+        <h3>Отзывы({{truecount}})</h3>
+        {% if not sended %}
+            {% if request.user.is_authenticated %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="rating-area">
+                            <input type="radio" id="star-5" name="rating" value="5">
+                            <label for="star-5" title="Оценка «5»"></label>
+                            <input type="radio" id="star-4" name="rating" value="4">
+                            <label for="star-4" title="Оценка «4»"></label>
+                            <input type="radio" id="star-3" name="rating" value="3">
+                            <label for="star-3" title="Оценка «3»"></label>
+                            <input type="radio" id="star-2" name="rating" value="2">
+                            <label for="star-2" title="Оценка «2»"></label>
+                            <input type="radio" id="star-1" name="rating" value="1">
+                            <label for="star-1" title="Оценка «1»"></label>
+                            <input type="radio" id="star-0" name="rating" value="0" checked>
+                        </div>
+                        <div>
+                            {% for field in form %}
+                            <div class="form-group">
+                                {{field.label_tag}}
+                                <div>{{field}}</div>
+                                <div class="error">{{field.errors}}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Добавить отзыв">
+                    </form>
+            {% else %}
+                <strong>Чтобы оставить комментарий, пожалуйста, войдите в систему</strong>
+            {% endif %}
+        {% endif %}
+
+        {% for comment in product.comments.all %}
+            <div class="otzyv mb-4">
+                <hr>
+                {{ comment.user }}<br>
+                {{comment.com_date}}<br>
+                <div class="rating-result">
+                    {% for r in 5|make_list %}
+                        {% if r in comment.rating|make_list %}
+                            <span class="active"></span>
+                        {% else %}
+                            <span></span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% if request.user == comment.user %}
+                    <a href="{% url 'com_edit' comment.id %}">Редактировать свой отзыв</a><br>
+                {% endif %}
+                <br>{{ comment.com_text }} <br><hr>
+            </div>
+
+        {% empty %}
+            <p>Отзывы отсутствуют.</p>
+        {% endfor %}
+    {% else %}
+            <h2>Товара отсутствует</h2>
+    {% endif %}
+
+</div>
+{% endblock content %}

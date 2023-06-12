@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% load custom_filters %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 style="color: #00008b;">Редактировать отзыв:</h1>
+    <hr>
+    <p>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="rating-area">
+                <input type="radio" id="star-5" name="rating" value="5">
+                <label for="star-5" title="Оценка «5»"></label>
+                <input type="radio" id="star-4" name="rating" value="4">
+                <label for="star-4" title="Оценка «4»"></label>
+                <input type="radio" id="star-3" name="rating" value="3">
+                <label for="star-3" title="Оценка «3»"></label>
+                <input type="radio" id="star-2" name="rating" value="2">
+                <label for="star-2" title="Оценка «2»"></label>
+                <input type="radio" id="star-1" name="rating" value="1">
+                <label for="star-1" title="Оценка «1»"></label>
+                <input type="radio" id="star-0" name="rating" value="0" checked>
+            </div>
+            <div>
+                {% for field in form %}
+                <div class="form-group">
+                    {{field.label_tag}}
+                    <div>{{field}}</div>
+                    <div class="error">{{field.errors}}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <input class="btn btn-primary" type="submit" value="Изменить отзыв">
+        </form>
+    </p>
+
+
+</div>
+{% endblock content %}
